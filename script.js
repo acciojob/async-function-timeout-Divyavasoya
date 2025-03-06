@@ -1,30 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const textInput = document.getElementById("text");
-    const delayInput = document.getElementById("delay");
-    const button = document.getElementById("btn");
-    const outputDiv = document.getElementById("output");
+document.getElementById("btn").addEventListener("click", async function () {
+  let textInput = document.getElementById("text").value;
+  let delayInput = document.getElementById("delay").value;
+  let outputDiv = document.getElementById("output");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent form from refreshing the page
-    });
+  if (!textInput || !delayInput) {
+    outputDiv.innerHTML = "Please enter both text and delay.";
+    return;
+  }
 
-    button.addEventListener("click", async function () {
-        const text = textInput.value.trim();
-        const delay = parseInt(delayInput.value.trim());
+  let delay = parseInt(delayInput);
 
-        // Input validation
-        if (!text || isNaN(delay) || delay < 0) {
-            outputDiv.innerText = "Please enter valid text and delay time.";
-            return;
-        }
+  outputDiv.innerHTML = ""; // Clear output before waiting
 
-        outputDiv.innerText = "Waiting...";
-        button.disabled = true; // Disable button to prevent multiple clicks
+  await new Promise((resolve) => setTimeout(resolve, delay));
 
-        await new Promise(resolve => setTimeout(resolve, delay));
-
-        outputDiv.innerText = text;
-        button.disabled = false; // Re-enable button after delay
-    });
+  outputDiv.innerHTML = textInput;
 });
